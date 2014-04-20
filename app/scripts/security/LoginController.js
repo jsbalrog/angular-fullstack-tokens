@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp').controller('LoginCtrl', function ($scope, Auth, $location) {
+angular.module('myApp').controller('LoginCtrl', function ($scope, Auth, $location, $facebook) {
   $scope.user = {};
   $scope.errors = {};
 
@@ -17,6 +17,28 @@ angular.module('myApp').controller('LoginCtrl', function ($scope, Auth, $locatio
         $location.path('/');
       });
     }
+  };
+
+  $scope.loginFacebook = function() {
+    $facebook.login({scope:'email'}).then(function(response) {
+      console.log(response);
+      $scope.me();
+    },
+    function(response) {
+      console.log(response);
+    });
+  };
+
+  $scope.getLoginStatus = function() {
+  };
+
+  $scope.me = function() {
+    $facebook.api('/me', {fields: 'id, name, email, username'}).then(function(response) {
+      console.log(response);
+      Auth.loginFacebook(response).then(function() {
+        $location.path('/');
+      });
+    });
   };
 
 });

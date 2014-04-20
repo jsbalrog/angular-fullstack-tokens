@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp', ['pascalprecht.translate', 'ngCookies', 'ngResource', 'ngSanitize', 'ngRoute']).config(function ($translateProvider, $routeProvider, $locationProvider, $httpProvider) {
+angular.module('myApp', ['pascalprecht.translate', 'ngCookies', 'ngResource', 'ngSanitize', 'ngRoute', 'facebook', 'config']).config(function ($translateProvider, $routeProvider, $locationProvider, $httpProvider, $facebookProvider, ENV) {
   $routeProvider
     .when('/', {
       templateUrl: 'partials/system/main',
@@ -22,6 +22,12 @@ angular.module('myApp', ['pascalprecht.translate', 'ngCookies', 'ngResource', 'n
     .otherwise({
       redirectTo: '/'
     });
+
+  $facebookProvider.init({appId: ENV.appId});
+
+  $httpProvider.defaults.useXDomain = true;
+  delete $httpProvider.defaults.headers
+    .common['X-Requested-With'];
 
   // These next two lines specify looking for localization strings at:
   // locales/strings.json?lang=en_US

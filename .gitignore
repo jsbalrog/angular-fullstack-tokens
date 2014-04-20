@@ -7,3 +7,4 @@ heroku
 /views
 dist
 .idea
+app/scripts/config.js

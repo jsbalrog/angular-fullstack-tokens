@@ -69,6 +69,31 @@ angular.module('myApp').factory('Auth', function Auth($window, $http, $location,
       return deferred.promise;
     },
 
+    loginFacebook: function(user, callback) {
+      var deferred = $q.defer(),
+          cb = callback || angular.noop;
+      console.log("here", user);
+      $http.post('/login/facebook', user)
+        .success(function(data) {
+          $window.sessionStorage.token = data.token;
+          $rootScope.isAuthenticated = true;
+          var encodedProfile = data.token.split('.')[1];
+          var profile = JSON.parse(urlBase64Decode(encodedProfile));
+          $rootScope.currentUser = profile;
+          console.log('Welcome ' + profile.name);
+          cb();
+          deferred.resolve(profile);
+        })
+        .error(function(data) {
+          delete $window.sessionStorage.token;
+          $rootScope.isAuthenticated = false;
+          $rootScope.currentUser = null;
+          cb(data.error);
+          deferred.reject($rootScope.currentUser);
+        });
+      return deferred.promise;
+    },
+
     /**
      * Unauthenticate user
      *

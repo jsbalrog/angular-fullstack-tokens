@@ -21,6 +21,38 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+    // constants
+    ngconstant: {
+      // Options for all targets
+      options: {
+        name: 'config',
+        wrap: '"use strict";\n\n {%= __ngModule %}'
+      },
+      // Environment targets
+      development: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/config.js'
+        },
+        constants: {
+          ENV: {
+            name: 'facebook',
+            appId: '<YOUR_APP_ID>'
+          }
+        }
+      },
+      production: {
+        options: {
+          dest: '<%= yeoman.dist %>/scripts/config.js'
+        },
+        constants: {
+          ENV: {
+            name: 'facebook',
+            appId: '<YOUR_PROD_APP_ID>'
+          }
+        }
+      }
+    },
+
     // Project settings
     yeoman: {
       // configurable paths
@@ -481,6 +513,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:development',
       'bower-install',
       'concurrent:server',
       'autoprefixer',
@@ -520,6 +553,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant:production',
     'bower-install',
     'useminPrepare',
     'concurrent:dist',
