@@ -9,7 +9,7 @@ It is not a generator; rather, it is an already-generated skeleton or "seed" pro
 * passport with Json Web Tokens
 * SASS/Compass
 
-To use, clone repo, then run `npm install`.
+To use, clone repo, then run `npm install`, then `bower install`.
 
 To launch the server, run `grunt serve`.
 
@@ -37,16 +37,18 @@ We provide an extremely simplifed deployment process for heroku.
 
 `yo angular-fullstack:deploy heroku` generates a `dist` folder that is deployment ready  for [heroku.com](http://heroku.com/).
 
-**Create and Deploy an app in 4 steps**
+**Create and Deploy an app in 5 easy steps**
 
 1. `mkdir foo && cd foo`
 
-2. `yo angular-fullstack`
+2. `git clone git@github.com:jsbalrog/angular-fullstack-tokens.git`
 
-3. `yo angular-fullstack:deploy heroku`
+3. `npm install`
 
-4. `cd dist && git push heroku master`
+4. `bower install`
 
-5. Optional (if using mongoDB) `heroku addons:add mongohq`
+5. `cd dist && git push heroku master`
+
+6. Optional (if using mongoDB) `heroku addons:add mongohq`
 
 That's it! Your app should be live and shareable. Type `heroku open` to view it.  
