@@ -31,7 +31,7 @@ module.exports = function (grunt) {
       // Environment targets
       development: {
         options: {
-          dest: '<%= yeoman.app %>/scripts/config.js'
+          dest: '<%= yeoman.app %>/public/scripts/config.js'
         },
         constants: {
           ENV: {
@@ -272,7 +272,7 @@ module.exports = function (grunt) {
           src: [
             '<%= yeoman.dist %>/public/scripts/{,*/}*.js',
             '<%= yeoman.dist %>/public/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+            // '<%= yeoman.dist %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/public/styles/fonts/*'
           ]
         }
@@ -292,7 +292,7 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/views/{,*/}*.html',
+    html: ['<%= yeoman.dist %>/public/views/{,*/}*.html',
              '<%= yeoman.dist %>/views/{,*/}*.jade'],
       css: ['<%= yeoman.dist %>/public/styles/{,*/}*.css'],
       options: {
@@ -337,8 +337,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/views',
-          src: ['*.html', 'partials/**/*.html'],
-          dest: '<%= yeoman.dist %>/views'
+          src: ['*.html', 'partials/**/*.html'], // If you keep html template files elsewhere, add them here
+          dest: '<%= yeoman.dist %>/pubilc/views'
         }]
       }
     },
@@ -359,7 +359,7 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/views/*.html']
+        html: ['<%= yeoman.dist %>/public/views/*.html']
       }
     },
 
@@ -498,7 +498,25 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'express:prod', 'open', 'express-keepalive']);
+      return grunt.task.run([
+        'clean:dist',
+        'ngconstant:production',
+        'build',
+        'express:prod',
+        'open',
+        'express-keepalive'
+      ]);
+    } else {
+      return grunt.task.run([
+        'clean:server',
+        'ngconstant:development',
+        'bower-install',
+        'concurrent:server',
+        'autoprefixer',
+        'express:dev',
+        'open',
+        'watch'
+      ])
     }
 
     if (target === 'debug') {
@@ -510,17 +528,6 @@ module.exports = function (grunt) {
         'concurrent:debug'
       ]);
     }
-
-    grunt.task.run([
-      'clean:server',
-      'ngconstant:development',
-      'bower-install',
-      'concurrent:server',
-      'autoprefixer',
-      'express:dev',
-      'open',
-      'watch'
-    ]);
   });
 
   grunt.registerTask('server', function () {
