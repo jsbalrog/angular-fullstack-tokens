@@ -8,6 +8,7 @@ It is not a generator; rather, it is an already-generated skeleton or "seed" pro
 * express
 * passport with Json Web Tokens
 * SASS/Compass
+* Angular-translate (for localization)
 
 To use, clone repo, then run `npm install`, then `bower install`.
 
@@ -33,11 +34,11 @@ grunt build
 
 ### Heroku Deployment
 
-We provide an extremely simplifed deployment process for heroku.
+Thanks to DaftMonk's angular-fullstack, there is an extremely simplifed deployment process for heroku.
 
 `yo angular-fullstack:deploy heroku` generates a `dist` folder that is deployment ready  for [heroku.com](http://heroku.com/).
 
-**Create and Deploy an app in 5 easy steps**
+**Create and Deploy an app in 6 easy steps**
 
 1. `mkdir foo && cd foo`
 
@@ -47,8 +48,10 @@ We provide an extremely simplifed deployment process for heroku.
 
 4. `bower install`
 
-5. `cd dist && git push heroku master`
+5. `yo angular-fullstack:deploy heroku`
 
-6. Optional (if using mongoDB) `heroku addons:add mongohq`
+6. `cd dist && git push heroku master`
+
+7. Optional (if using mongoDB) `heroku addons:add mongohq`
 
 That's it! Your app should be live and shareable. Type `heroku open` to view it.  
