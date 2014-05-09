@@ -34,10 +34,10 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.app %>/scripts/config.js'
         },
         constants: {
-          ENV: {
-            name: 'facebook',
+          facebook: {
             appId: '<YOUR_APP_ID>'
-          }
+          },
+          ENV: 'development'
         }
       },
       production: {
@@ -45,10 +45,10 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>/public/scripts/config.js'
         },
         constants: {
-          ENV: {
-            name: 'facebook',
-            appId: '<YOUR_PROD_APP_ID>'
-          }
+          facebook: {
+            appId: '<YOUR_APP_ID>'
+          },
+          ENV: 'production'
         }
       }
     },
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
     },
     watch: {
       js: {
-      files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
+        files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
           livereload: true
@@ -106,9 +106,9 @@ module.exports = function (grunt) {
       },
       livereload: {
         files: [
-          '<%= yeoman.app %>/views/{,*//*}*.{html,jade}',
+          '<%= yeoman.app %>/views/{,*//*}{,*//*}*.{html,jade}',
           '{.tmp,<%= yeoman.app %>}/styles/{,*//*}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*//*}*.js',
+          '{.tmp,<%= yeoman.app %>}/scripts/{,*//*}{,*//*}*.js',
           '<%= yeoman.app %>/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
 
@@ -220,7 +220,7 @@ module.exports = function (grunt) {
             nodemon.on('config:update', function () {
               setTimeout(function () {
                 require('open')('http://localhost:8080/debug?port=5858');
-              }, 500);
+              }, 900);
             });
           }
         }
@@ -284,7 +284,7 @@ module.exports = function (grunt) {
     // additional tasks can operate on them
     useminPrepare: {
       html: ['<%= yeoman.app %>/views/index.html',
-             '<%= yeoman.app %>/views/index.jade'],
+        '<%= yeoman.app %>/views/index.jade'],
       options: {
         dest: '<%= yeoman.dist %>/public'
       }
@@ -292,8 +292,8 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-    html: ['<%= yeoman.dist %>/public/views/{,*/}*.html',
-             '<%= yeoman.dist %>/views/{,*/}*.jade'],
+      html: ['<%= yeoman.dist %>/public/views/{,*/}*.html',
+        '<%= yeoman.dist %>/views/{,*/}*.jade'],
       css: ['<%= yeoman.dist %>/public/styles/{,*/}*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>/public']
@@ -337,8 +337,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/views',
-          src: ['*.html', 'partials/**/*.html'], // If you keep html template files elsewhere, add them here
-          dest: '<%= yeoman.dist %>/pubilc/views'
+          src: ['*.html', 'partials/**/*.html', 'common/**/*.html'],
+          dest: '<%= yeoman.dist %>/public/views'
         }]
       }
     },
@@ -516,7 +516,7 @@ module.exports = function (grunt) {
         'express:dev',
         'open',
         'watch'
-      ])
+      ]);
     }
 
     if (target === 'debug') {
@@ -528,6 +528,16 @@ module.exports = function (grunt) {
         'concurrent:debug'
       ]);
     }
+
+    grunt.task.run([
+      'clean:server',
+      'bower-install',
+      'concurrent:server',
+      'autoprefixer',
+      'express:dev',
+      'open',
+      'watch'
+    ]);
   });
 
   grunt.registerTask('server', function () {
@@ -553,9 +563,9 @@ module.exports = function (grunt) {
     }
 
     else grunt.task.run([
-      'test:server',
-      'test:client'
-    ]);
+        'test:server',
+        'test:client'
+      ]);
   });
 
   grunt.registerTask('build', [
