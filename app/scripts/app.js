@@ -30,9 +30,9 @@ angular.module('myApp', ['pascalprecht.translate', 'ngCookies', 'ngResource', 'n
     .common['X-Requested-With'];
 
   // These next two lines specify looking for localization strings at:
-  // locales/strings.json?lang=en-US
+  // locales/strings.json?lang=en_US
   $translateProvider.useUrlLoader('locales/strings.json');
-  $translateProvider.preferredLanguage('en-US');
+  $translateProvider.preferredLanguage('en_US');
   $translateProvider.useLocalStorage();
 
   $locationProvider.html5Mode(true);
