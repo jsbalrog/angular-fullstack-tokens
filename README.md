@@ -10,6 +10,8 @@ It is not a generator; rather, it is an already-generated skeleton or "seed" pro
 * SASS/Compass
 * Angular-translate (for localization)
 
+TODO: Replace Angular-translate with [Angular-Localization](https://github.com/doshprompt/angular-localization)
+
 To use, clone repo, then run `npm install`, then `bower install`.
 
 To launch the server, run `grunt serve`.
